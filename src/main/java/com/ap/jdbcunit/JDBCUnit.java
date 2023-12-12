@@ -1,6 +1,6 @@
 /*
  * @author: Jean Lazarou
- * @date: 15 févr. 04
+ * @date: 15 fevr. 04
  */
 package com.ap.jdbcunit;
 

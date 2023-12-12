@@ -1,6 +1,6 @@
 /*
  * @author: Jean Lazarou
- * @date: 22 févr. 04
+ * @date: 22 fevr. 04
  */
 package com.ap.jdbcunit.csv;
 

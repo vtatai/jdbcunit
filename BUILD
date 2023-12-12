@@ -7,20 +7,14 @@ package(default_visibility = ["//visibility:public"])
 
 java_library(
     name = "java-maven-lib",
-    srcs = glob(["src/main/java/com/example/myproject/*.java"]),
+    srcs = glob(["src/main/java/com/ap/jdbcunit/**/*.java"]),
     deps = ["@maven//:com_google_guava_guava"],
-)
-
-java_binary(
-    name = "java-maven",
-    main_class = "com.example.myproject.App",
-    runtime_deps = [":java-maven-lib"],
 )
 
 java_test(
     name = "tests",
-    srcs = glob(["src/test/java/com/example/myproject/*.java"]),
-    test_class = "com.example.myproject.TestApp",
+    srcs = glob(["src/test/java/com/ap/jdbcunit/**/*.java"]),
+    test_class = "com.ap.jdbcunit.AllTests",
     deps = [
         ":java-maven-lib",
         "@maven//:com_google_guava_guava",
@@ -28,25 +22,3 @@ java_test(
     ],
 )
 
-tar(
-    name = "layer",
-    srcs = ["java-maven_deploy.jar"],
-)
-
-oci_image(
-    name = "image",
-    base = "@distroless_java",
-    entrypoint = [
-        "java",
-        "-jar",
-        "/java-maven-deploy.jar",
-    ],
-    tars = [":layer"],
-)
-
-container_structure_test(
-    name = "container_test",
-    configs = ["container-structure-test.yaml"],
-    image = ":image",
-    tags = ["requires-docker"],
-)
