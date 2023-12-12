@@ -9,8 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
-import com.ap.store.Store;
-
 public class JDBCUnit {
 
 	public static void registerDriver(String sqlDriverClass) {

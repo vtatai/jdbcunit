@@ -38,7 +38,8 @@ public class ConnectionWrapper implements Connection {
     }
 
     public CallableStatement prepareCall(String sql) throws SQLException {
-    	return new CallableStatementWrapper(this, sql, actualConnection.prepareCall(sql));
+			throw new UnsupportedOperationException();
+    	// return new CallableStatementWrapper(this, sql, actualConnection.prepareCall(sql));
     }
 
     public String nativeSQL(String sql) throws SQLException {
