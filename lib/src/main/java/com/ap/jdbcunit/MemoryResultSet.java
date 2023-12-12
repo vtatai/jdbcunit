@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class MemoryResultSet implements ResultSet {
 
   public MemoryResultSet(List data) {
     this.data = data;
+  }
+
+  public MemoryResultSet(Statement stmt, Iterator track) {
+    throw new UnsupportedOperationException();
   }
 
   @Override

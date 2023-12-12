@@ -4,7 +4,6 @@
  */
 package com.ap.jdbcunit.util;
 
-import com.ap.straight.MemoryResultSet;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 

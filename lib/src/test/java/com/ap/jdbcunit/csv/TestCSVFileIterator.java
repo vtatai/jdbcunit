@@ -7,8 +7,6 @@ package com.ap.jdbcunit.csv;
 import java.io.StringReader;
 import java.util.Iterator;
 
-import com.ap.util.Lists;
-
 import junit.framework.TestCase;
 
 public class TestCSVFileIterator extends TestCase {

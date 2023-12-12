@@ -6,9 +6,7 @@ package com.ap.jdbcunit.csv;
 
 import java.util.Iterator;
 
-import com.ap.store.Store;
 import com.ap.jdbcunit.util.MediaTestCase;
-import com.ap.util.Lists;
 
 public class TestCSVMedia extends MediaTestCase {
 
