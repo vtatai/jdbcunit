@@ -8,6 +8,19 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    `maven-publish`
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.google.looker"
+            artifactId = "jdbcunit"
+            version = "0.0.1"
+
+            from(components["java"])
+        }
+    }
 }
 
 repositories {

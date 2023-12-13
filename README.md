@@ -10,6 +10,16 @@ What can we do with this tool?
 
 The current implementation does not support INSERT/UPDATE/DELETE statements. Meaning that, if the same select statement is executed twice, the same result set is returned, even if some records were added or changed between in between.
 
+To build without tests
+```shell
+gradle build -x test
+```
+
+To deploy to your local maven
+```shell
+gradle publishToMavenLocal -x test
+```
+
 Overview
 --------
 
