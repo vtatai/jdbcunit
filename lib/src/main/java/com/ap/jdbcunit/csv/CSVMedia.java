@@ -23,16 +23,12 @@ import java.util.TreeMap;
  * All the files (stores) are formatted using a comma separated values text format.
  */
 public class CSVMedia implements Media {
-
-  int id = 1;
-  Store track;
-  PrintWriter outWriter;
-
-  Map urls = new HashMap();
-
-  Store toc;
-  Store container;
-//
+  private int id = 1;
+  private Store track;
+  private PrintWriter outWriter;
+  private Map urls = new HashMap();
+  private Store toc;
+  private Store container;
 
   /**
    * Creates a CSVMedia that is writing the TOC, the repository, to the given store and the result
@@ -47,7 +43,6 @@ public class CSVMedia implements Media {
 
 
   public void open() {
-
     if (!toc.exists()) {
       toc.create();
     } else {
@@ -81,7 +76,6 @@ public class CSVMedia implements Media {
         }
       }
     }
-
     isOpen = true;
   }
 

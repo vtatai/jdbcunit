@@ -33,9 +33,7 @@ public class CSVFileIterator implements Iterator {
     }
 
     Object res = Lists.csvSplit(nextLine, true);
-
     moveToNext();
-
     return res;
   }
 
@@ -44,18 +42,11 @@ public class CSVFileIterator implements Iterator {
   }
 
   private void moveToNext() {
-
     try {
-
       nextLine = this.in.readLine();
-
     } catch (IOException e) {
-
       e.printStackTrace();
-
       nextLine = null;
     }
-
   }
-
 }

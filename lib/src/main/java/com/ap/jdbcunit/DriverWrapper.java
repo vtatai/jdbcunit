@@ -27,18 +27,15 @@ public class DriverWrapper implements Driver {
   public static void deregisterDrivers() throws SQLException {
     registry.clear();
 
-    Enumeration it = DriverManager.getDrivers();
-
+    Enumeration<Driver> it = DriverManager.getDrivers();
     while (it.hasMoreElements()) {
-      Driver drv = (Driver) it.nextElement();
+      Driver drv = it.nextElement();
       DriverManager.deregisterDriver(drv);
     }
   }
 
   public Connection connect(String url, Properties info) throws SQLException {
-
     Driver drv = getDriver(url);
-
 		if (drv == null) {
 			return null;
 		} else if (JDBCUnit.isReplaying()) {
@@ -46,7 +43,6 @@ public class DriverWrapper implements Driver {
 		} else {
 			return new ConnectionWrapper(drv.connect(url, info));
 		}
-
   }
 
   public boolean acceptsURL(String url) throws SQLException {
@@ -78,14 +74,11 @@ public class DriverWrapper implements Driver {
   }
 
   private Driver getDriver(String url) throws SQLException {
-
     for (Driver drv : registry) {
-
       if (drv.acceptsURL(url)) {
         return drv;
       }
     }
-
     return null;
   }
 
