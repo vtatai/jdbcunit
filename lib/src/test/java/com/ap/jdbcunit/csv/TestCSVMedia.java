@@ -4,6 +4,7 @@
  */
 package com.ap.jdbcunit.csv;
 
+import com.ap.store.Store;
 import java.util.Iterator;
 
 import com.ap.jdbcunit.util.MediaTestCase;
@@ -76,12 +77,12 @@ public class TestCSVMedia extends MediaTestCase {
 		addSelectWithNulls(media);		
 		media.close();
 
-		// Store store = repository.child("toc_1.csv");
+		Store store = repository.child("toc_1.csv");
 		
-		// assertEquals(new String[] {
-		// 	"\"name\",\"firstname\",\"birthdate\"",
-		// 	"\"null\",null,\"1/03/2000\"",
-		// 	}, store.reader());
+		assertEquals(new String[] {
+			"\"name\",\"firstname\",\"birthdate\"",
+			"\"null\",null,\"1/03/2000\"",
+			}, store.reader());
 	}
 	
 	public void testEscapedStrings() {
@@ -90,43 +91,42 @@ public class TestCSVMedia extends MediaTestCase {
 		addSelectWithQuotes(media);		
 		media.close();
 
-		// Store store = repository.child("toc_1.csv");
+		Store store = repository.child("toc_1.csv");
 		
-		// assertEquals(new String[] {
-		// 	"\"isbn\",\"title\",\"author\"",
-		// 	"\"0596000162\",\"Java and XML\",\"Brett McLaughlin\"",
-		// 	"\"0201485435\",\"XML and Java: \"\"Developing Web Applications\"\"\",\"Hiroshi Maruyama\"",
-		// 	"\"1565927095\",\"XML \"\"Pocket Reference\",\"Robert Eckstein\"",
-		// 	}, store.reader());
+		assertEquals(new String[] {
+			"\"isbn\",\"title\",\"author\"",
+			"\"0596000162\",\"Java and XML\",\"Brett McLaughlin\"",
+			"\"0201485435\",\"XML and Java: \"\"Developing Web Applications\"\"\",\"Hiroshi Maruyama\"",
+			"\"1565927095\",\"XML \"\"Pocket Reference\",\"Robert Eckstein\"",
+			}, store.reader());
 
 	}
 	
 	private void verify() {
-		// assertEquals(new String[] {
-		// 	"dbURL, SQL, Name",
-		// 	"\"jdbc:driver:Database\",\"SELECT * FROM people\",\"toc_1.csv\"",
-		// 	"\"jdbc:driver:Database\",\"SELECT * FROM people WHERE name = 'Loyd'\",\"toc_2.csv\""
-		// 	}, toc.reader());
+		assertEquals(new String[] {
+			"dbURL, SQL, Name",
+			"\"jdbc:driver:Database\",\"SELECT * FROM people\",\"toc_1.csv\"",
+			"\"jdbc:driver:Database\",\"SELECT * FROM people WHERE name = 'Loyd'\",\"toc_2.csv\""
+			}, toc.reader());
 		
-		// assertEquals(3, repository.children().size());
+		assertEquals(3, repository.children().size());
 		
-		// assertTrue(repository.child("toc_1.csv") != null);
-		// assertTrue(repository.child("toc_2.csv") != null);
+		assertTrue(repository.child("toc_1.csv") != null);
+		assertTrue(repository.child("toc_2.csv") != null);
 		
-		// Store store = repository.child("toc_1.csv");
+		Store store = repository.child("toc_1.csv");
 		
-		// assertEquals(new String[] {
-		// 	"\"name\",\"firstname\",\"birthdate\"",
-		// 	"\"Loyd\",\"Mike\",\"12/03/1901\"",
-		// 	"\"White\",\"Jack\",\"1/04/1863\"",
-		// 	}, store.reader());
+		assertEquals(new String[] {
+			"\"name\",\"firstname\",\"birthdate\"",
+			"\"Loyd\",\"Mike\",\"12/03/1901\"",
+			"\"White\",\"Jack\",\"1/04/1863\"",
+			}, store.reader());
 		
-		// store = repository.child("toc_2.csv");
+		store = repository.child("toc_2.csv");
 		
-		// assertEquals(new String[] {
-		// 	"\"name\",\"firstname\",\"birthdate\"",
-		// 	"\"Loyd\",\"Mike\",\"12/03/1901\"",
-		// 	}, store.reader());
+		assertEquals(new String[] {
+			"\"name\",\"firstname\",\"birthdate\"",
+			"\"Loyd\",\"Mike\",\"12/03/1901\"",
+			}, store.reader());
 	}
-
 }
