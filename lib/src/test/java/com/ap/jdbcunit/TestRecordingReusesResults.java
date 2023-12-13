@@ -16,65 +16,44 @@ import com.ap.jdbcunit.util.DatabaseService;
 import com.ap.straight.MemoryResultSet;
 
 public class TestRecordingReusesResults extends JDBCUnitTestCase implements Recorder {
+	private MemoryResultSet memres;
+	private int count;
 
-    public TestRecordingReusesResults(String name) {
+
+	public TestRecordingReusesResults(String name) {
         super(name);
     }
 
     public void testSelect() throws Exception {
-
         JDBCUnit.start(this);
-		
         JDBCUnit.record();
-
         stmt = con.createStatement();
-
         rs = stmt.executeQuery("SELECT * FROM persons");
-
         rs = stmt.executeQuery("SELECT * FROM persons");
-
         assertTrue(DatabaseService.containsAllPersons(rs));
-
         verify();
-        
         JDBCUnit.stop();
-        
     }
     
     public void testPreparedSelect() throws Exception {
-
       JDBCUnit.start(this);
-      
       JDBCUnit.record();
-
       PreparedStatement pstmt = con.prepareStatement("SELECT * FROM persons");
-      
       stmt = pstmt;
-
       rs = pstmt.executeQuery();
-
       rs = pstmt.executeQuery();
-
       assertTrue(DatabaseService.containsAllPersons(rs));
-
       verify();
-      
       JDBCUnit.stop();
-      
 	}
     
 	public boolean existsTrack(String dbURL, String sql) {
-		
 		if (count++ == 0) return false;
-		
 		assertEquals(count, 3);
-		
 		return true;
-		
 	}
 
 	public void add(String dbURL, String sql, ResultSet rs) {
-		
 		count++;
 		
 		assertEquals(count, 2);
@@ -90,13 +69,9 @@ public class TestRecordingReusesResults extends JDBCUnitTestCase implements Reco
 	}
 
 	public ResultSet get(Statement stmt, String dbURL, String sql) {
-		
 		count++;
-		
 		assertEquals(count, 4);
-		
 		return memres;
-		
 	}
 	
 	public void verify() {
@@ -105,7 +80,6 @@ public class TestRecordingReusesResults extends JDBCUnitTestCase implements Reco
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		
 		count = 0;
 	}
 
@@ -117,8 +91,4 @@ public class TestRecordingReusesResults extends JDBCUnitTestCase implements Reco
 
 	public void clear() {	
 	}
-	
-	MemoryResultSet memres;
-	int count;
-
 }

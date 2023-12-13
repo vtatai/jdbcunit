@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.guava)
 
     testImplementation("org.hsqldb:hsqldb:2.7.2")
+    testImplementation("org.postgresql:postgresql:42.7.1")
     testImplementation("org.easymock:easymock:2.0")
 
 }

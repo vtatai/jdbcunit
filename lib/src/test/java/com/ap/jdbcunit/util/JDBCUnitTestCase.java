@@ -19,7 +19,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 
 public class JDBCUnitTestCase extends TestCase {
-
     protected Connection con;
     protected Statement stmt;
     protected ResultSet rs;
