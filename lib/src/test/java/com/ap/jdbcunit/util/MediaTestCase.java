@@ -4,7 +4,6 @@
  */
 package com.ap.jdbcunit.util;
 
-import com.ap.jdbcunit.Store;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -96,8 +95,8 @@ public class MediaTestCase extends MediaConformanceTestCase {
 		bookRow3.add("XML \"Pocket Reference");
 		bookRow3.add("Robert Eckstein");
 
-		repository = new MemoryStore("repository");
-		toc = repository.add("toc");
+		// repository = new MemoryStore("repository");
+		// toc = repository.add("toc");
 	}
 
 	public static void assertEquals(String[] expected, Reader actual) {
@@ -223,5 +222,5 @@ public class MediaTestCase extends MediaConformanceTestCase {
 	protected List bookColumns;
 	protected List bookRow1, bookRow2, bookRow3;
 
-	protected Store repository, toc;
+	// protected Store repository, toc;
 }

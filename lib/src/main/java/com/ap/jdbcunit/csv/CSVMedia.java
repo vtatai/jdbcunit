@@ -6,7 +6,7 @@ package com.ap.jdbcunit.csv;
 
 import com.ap.jdbcunit.Media;
 import com.ap.jdbcunit.MediaVisitor;
-import com.ap.jdbcunit.Store;
+import com.ap.store.Store;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;

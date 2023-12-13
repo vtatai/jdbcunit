@@ -5,8 +5,7 @@
 package com.ap.jdbcunit.conformance;
 
 import junit.framework.TestSuite;
-
-import com.ap.junit.TestSuites;
+import com.ap.jdbcunit.TestSuites;
 
 public class MediaConformanceTests extends TestSuite {
 	

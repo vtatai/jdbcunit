@@ -4,6 +4,7 @@
  */
 package com.ap.jdbcunit;
 
+import com.ap.store.Store;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

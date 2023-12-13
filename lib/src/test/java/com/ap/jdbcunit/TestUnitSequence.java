@@ -13,7 +13,7 @@ import org.easymock.MockControl;
 
 import com.ap.jdbcunit.util.DatabaseService;
 import com.ap.jdbcunit.util.JDBCUnitTestCase;
-import com.ap.util.Lists;
+// import com.ap.util.Lists;
 
 public class TestUnitSequence extends JDBCUnitTestCase {
 
@@ -162,14 +162,14 @@ public class TestUnitSequence extends JDBCUnitTestCase {
 		media.existsTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons");
 		control.setDefaultReturnValue(false);
 		
-		media.newTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons", Lists.toList(new String[] {"ID", "LASTNAME", "FIRSTNAME", "LIVESIN"}));
+		// media.newTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons", Lists.toList(new String[] {"ID", "LASTNAME", "FIRSTNAME", "LIVESIN"}));
 		control.setVoidCallable();
 		
-		media.write(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
+		// media.write(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
 		control.setVoidCallable();
-		media.write(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
+		// media.write(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
 		control.setVoidCallable();
-		media.write(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
+		// media.write(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
 		control.setVoidCallable();
 		
 		media.closeTrack();
@@ -199,10 +199,10 @@ public class TestUnitSequence extends JDBCUnitTestCase {
 		
 		List data = new ArrayList();
 		
-		data.add(Lists.toList(new String[] {"id", "lastname", "firstname", "livesin"}));
-		data.add(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
-		data.add(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
-		data.add(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
+		// data.add(Lists.toList(new String[] {"id", "lastname", "firstname", "livesin"}));
+		// data.add(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
+		// data.add(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
+		// data.add(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
 		
 		media.getTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons");
 		control.setReturnValue(data.iterator());

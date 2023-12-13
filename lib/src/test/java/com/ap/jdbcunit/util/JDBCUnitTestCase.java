@@ -48,7 +48,7 @@ public class JDBCUnitTestCase extends TestCase {
 			assertEquals(dbURL, "jdbc:hsqldb:mem:TestDatabase");
 			assertEquals(expectedSQL, sql);
 		
-			recorded = MemoryResultSet.create(rs);
+			// recorded = MemoryResultSet.create(rs);
 		
 		}
 

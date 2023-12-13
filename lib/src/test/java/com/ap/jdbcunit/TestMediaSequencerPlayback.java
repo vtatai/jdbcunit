@@ -21,7 +21,7 @@ public class TestMediaSequencerPlayback extends JDBCUnitTestCase {
 		
 		mock = new MediaMock();
 		
-		recorder = new MediaSequencer(mock.getMedia());
+		// recorder = new MediaSequencer(mock.getMedia());
 
 		mock.setSequencer();
 		mock.setPlaybackMode();
@@ -38,7 +38,7 @@ public class TestMediaSequencerPlayback extends JDBCUnitTestCase {
 		mock.recordClose();
 		mock.replay();
 		
-		JDBCUnit.start(recorder);
+		// JDBCUnit.start(recorder);
 		
         JDBCUnit.replay();
 

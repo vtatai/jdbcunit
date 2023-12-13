@@ -4,7 +4,7 @@
  */
 package com.ap.jdbcunit;
 
-// import com.ap.store.Store;
+import com.ap.store.Store;
 
 public interface MediaFactory {
 	Media create(Store store);

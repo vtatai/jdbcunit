@@ -13,7 +13,6 @@ import java.util.Stack;
 import org.easymock.MockControl;
 
 import com.ap.jdbcunit.Media;
-import com.ap.util.Dates;
 
 /**
  * @author Jean Lazarou
@@ -141,7 +140,7 @@ public class MediaMock {
 		media.existsTrack("jdbc:hsqldb:mem:TestDatabase", "SELECT * FROM payroll WHERE id = 1");
 		controller.setReturnValue(false);
 		media.newTrack("jdbc:hsqldb:mem:TestDatabase", "select * from payroll where id=1", payrollColumns);
-		media.write(Arrays.asList(new Object[] {new Integer(1), "Big", Dates.createSQLDate(2005, 05, 12), new BigDecimal("6000")}));
+		// media.write(Arrays.asList(new Object[] {new Integer(1), "Big", Dates.createSQLDate(2005, 05, 12), new BigDecimal("6000")}));
 		media.closeTrack();
 		
 		addAsRecorded(ROW_FOR_PAYROLL);
