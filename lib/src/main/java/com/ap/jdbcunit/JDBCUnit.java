@@ -4,11 +4,12 @@
  */
 package com.ap.jdbcunit;
 
-import com.ap.store.Store;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
+
+import com.ap.store.Store;
 
 public class JDBCUnit {
 
@@ -64,7 +65,7 @@ public class JDBCUnit {
 		}
 	}
 	
-	public static void start(Store store) {
+	public static void start(Store store) {	
 		start(new MediaRecorder(MediaManager.createMedia(store)));
 	}
 	

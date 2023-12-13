@@ -19,78 +19,79 @@ import java.util.logging.Logger;
 import com.ap.jdbcunit.playback.PlaybackConnection;
 
 public class DriverWrapper implements Driver {
-  static List<Driver> registry = new ArrayList<>();
 
-  public DriverWrapper(Driver actualDriver) {
-    registry.add(actualDriver);
-  }
-
-  public static void deregisterDrivers() throws SQLException {
-    registry.clear();
-
-    Enumeration it = DriverManager.getDrivers();
-
-    while (it.hasMoreElements()) {
-      Driver drv = (Driver) it.nextElement();
-      DriverManager.deregisterDriver(drv);
+    public DriverWrapper(Driver actualDriver) {
+        registry.add(actualDriver);
     }
-  }
 
-  public Connection connect(String url, Properties info) throws SQLException {
-
-    Driver drv = getDriver(url);
-
-		if (drv == null) {
+	public static void deregisterDrivers()  throws SQLException {
+		registry.clear();
+				
+		Enumeration it = DriverManager.getDrivers();
+		
+		while(it.hasMoreElements()) {
+			Driver drv = (Driver) it.nextElement();
+			DriverManager.deregisterDriver(drv);
+		}
+	}
+	
+    public Connection connect(String url, Properties info) throws SQLException {
+    	
+		Driver drv = getDriver(url);
+		
+		if (drv == null)
 			return null;
-		} else if (JDBCUnit.isReplaying()) {
+		else if (JDBCUnit.isReplaying())
 			return new ConnectionWrapper(new PlaybackConnection(drv, url));
-		} else {
+		else
 			return new ConnectionWrapper(drv.connect(url, info));
-		}
-  }
-
-  public boolean acceptsURL(String url) throws SQLException {
-    return getDriver(url) != null;
-  }
-
-  public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-
-    Driver drv = getDriver(url);
-
-		if (drv == null) {
-			return new DriverPropertyInfo[0];
-		} else {
-			return drv.getPropertyInfo(url, info);
-		}
-  }
-
-  public int getMajorVersion() {
-    return 1;
-  }
-
-  public int getMinorVersion() {
-    return 0;
-  }
-
-  public boolean jdbcCompliant() {
-    return false;
-  }
-
-  private Driver getDriver(String url) throws SQLException {
-
-    for (Driver drv : registry) {
-
-      if (drv.acceptsURL(url)) {
-        return drv;
-      }
+			
     }
 
-    return null;
-  }
+    public boolean acceptsURL(String url) throws SQLException {
+    	return getDriver(url) != null;
+    }
 
-  //------------------------- JDBC 4.1 -----------------------------------
+    public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
+    	
+		Driver drv = getDriver(url);
+		
+		if (drv == null)
+			return new DriverPropertyInfo[0];
+		else
+        	return drv.getPropertyInfo(url, info);
+        	
+    }
 
-  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-    throw new SQLFeatureNotSupportedException();
-  }
+    public int getMajorVersion() {
+        return 1;
+    }
+
+    public int getMinorVersion() {
+        return 0;
+    }
+
+    public boolean jdbcCompliant() {
+        return false;
+    }
+
+	private Driver getDriver(String url) throws SQLException {
+
+        for (Driver drv : registry) {
+
+            if (drv.acceptsURL(url)) {
+                return drv;
+            }
+        }
+
+		return null;		
+	}
+	
+    static List<Driver> registry = new ArrayList<>();
+
+    //------------------------- JDBC 4.1 -----------------------------------
+
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		throw new SQLFeatureNotSupportedException();
+	}
 }
