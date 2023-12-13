@@ -17,16 +17,16 @@ public class TestCSVMedia extends MediaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		// media = new CSVMedia(toc);
+		media = new CSVMedia(toc);
 	}
 
 	public void testSaveNoData() {
 		media.open();
 		media.close();
 
-		// assertEquals(new String[] {"dbURL, SQL, Name",}, toc.reader());
+		assertEquals(new String[] {"dbURL, SQL, Name",}, toc.reader());
 
-		// assertEquals(1, repository.children().size());
+		assertEquals(1, repository.children().size());
 	}
 	
 	public void testWritingTOCAndData() {
@@ -47,23 +47,23 @@ public class TestCSVMedia extends MediaTestCase {
 		addSelectLoyd(media);
 		media.close();
 			
-		// media = new CSVMedia(toc);
+		media = new CSVMedia(toc);
 		
 		media.open();
 		
 		Iterator it = media.getTrack("jdbc:driver:Database", "SELECT * FROM people");
 		
 		assertTrue(it.hasNext());		
-		// assertEquals(Lists.toList(new String[] {"name","firstname","birthdate"}),
-		//              it.next());
+		assertEquals(Lists.toList(new String[] {"name","firstname","birthdate"}),
+		             it.next());
 		
 		assertTrue(it.hasNext());
-		// assertEquals(Lists.toList(new String[] {"Loyd","Mike","12/03/1901"}),
-		// 			 it.next());
+		assertEquals(Lists.toList(new String[] {"Loyd","Mike","12/03/1901"}),
+					 it.next());
 		
 		assertTrue(it.hasNext());
-		// assertEquals(Lists.toList(new String[] {"White","Jack","1/04/1863"}),
-		// 			 it.next());
+		assertEquals(Lists.toList(new String[] {"White","Jack","1/04/1863"}),
+					 it.next());
 		
 		assertTrue(!it.hasNext());
 		

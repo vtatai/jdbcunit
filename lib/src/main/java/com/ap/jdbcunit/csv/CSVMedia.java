@@ -26,7 +26,7 @@ public class CSVMedia implements Media {
   private int id = 1;
   private Store track;
   private PrintWriter outWriter;
-  private Map urls = new HashMap();
+  private Map<String, Map<String, Store>> urls = new HashMap<>();
   private Store toc;
   private Store container;
 
@@ -46,29 +46,23 @@ public class CSVMedia implements Media {
     if (!toc.exists()) {
       toc.create();
     } else {
-
       urls.clear();
-
       boolean first = true;
-
       CSVFileIterator it = new CSVFileIterator(toc.reader());
-
       while (it.hasNext()) {
-
-        List row = (List) it.next();
-
+        List<String> row = it.next();
         if (first) {
           first = false;
           continue;
         }
 
-        Map statements;
+        Map<String, Store> statements;
 
         if (!urls.containsKey(row.get(0))) {
-          statements = new TreeMap();
+          statements = new TreeMap<>();
           urls.put(row.get(0), statements);
         } else {
-          statements = (Map) urls.get(row.get(0));
+          statements = urls.get(row.get(0));
         }
 
         if (!statements.containsKey(row.get(1))) {
@@ -92,7 +86,6 @@ public class CSVMedia implements Media {
     foreachTrack(new MediaVisitor() {
 
       public void visit(String dbURL, String sql, Object track) {
-
       	out.print('"');
       	out.print(dbURL);
       	out.print("\",\"");
@@ -105,9 +98,7 @@ public class CSVMedia implements Media {
       	out.print('"');
 
       	out.println();
-
       }
-
     });
 
     out.flush();
@@ -117,183 +108,126 @@ public class CSVMedia implements Media {
   }
 
   public void delete() {
-
     checkState();
-
     foreachTrack(new MediaVisitor() {
-
       public void visit(String dbURL, String sql, Object track) {
         // ((Store) track).delete();
       }
-
     });
-
     urls.clear();
-
   }
 
   public int countTracks() {
-
     checkState();
-
     Counter counter = new Counter();
-
     foreachTrack(counter);
-
     return counter.count;
-
   }
 
   public void foreachTrack(MediaVisitor visitor) {
-
     checkState();
-
-    Iterator it = urls.keySet().iterator();
-
+    Iterator<String> it = urls.keySet().iterator();
     while (it.hasNext()) {
-
-      String url = (String) it.next();
-
-      Map statements = (Map) urls.get(url);
-
-      Iterator sqlIt = statements.keySet().iterator();
-
+      String url = it.next();
+      Map<String, Store> statements = urls.get(url);
+      Iterator<String> sqlIt = statements.keySet().iterator();
       while (sqlIt.hasNext()) {
-
-        String sql = (String) sqlIt.next();
-        Store track = (Store) statements.get(sql);
-
+        String sql = sqlIt.next();
+        Store track = statements.get(sql);
         visitor.visit(url, sql, track);
-
       }
     }
   }
 
   public boolean existsTrack(String dbURL, String sql) {
-
     checkState();
-
     if (!urls.containsKey(dbURL)) {
       return false;
     }
+    Map<String, Store> statements = urls.get(dbURL);
 
-    Map statements = (Map) urls.get(dbURL);
-
-    if (!statements.containsKey(sql)) {
-      return false;
-    }
-
-    return true;
+    return statements.containsKey(sql);
   }
 
   public void newTrack(String dbURL, String sql, List columnNames) {
-
     checkState();
-
-    Map statements;
-
+    Map<String, Store> statements;
     if (!urls.containsKey(dbURL)) {
-
-      statements = new TreeMap();
-
+      statements = new TreeMap<>();
       urls.put(dbURL, statements);
-
     } else {
-
-      statements = (Map) urls.get(dbURL);
-
+      statements = urls.get(dbURL);
       if (statements.containsKey(sql)) {
         return;
       }
     }
 
     String trackName = toc.getName();
-
     if (trackName.endsWith(".csv") && trackName.length() > 4) {
       trackName = trackName.substring(0, trackName.length() - 4);
     }
 
     trackName = trackName + "_" + id++ + ".csv";
-
     track = container.add(trackName);
-
     outWriter = track.printWriter();
-
     writeList(columnNames);
-
     statements.put(sql, track);
   }
 
   public void closeTrack() {
-
     checkState();
-
     if (outWriter != null) {
       outWriter.flush();
       outWriter.close();
       outWriter = null;
     }
-
   }
 
   public void write(List row) {
     checkState();
-
     if (outWriter != null) {
       writeList(row);
     }
   }
 
   public Iterator getTrack(String dbURL, String sql) {
-
     checkState();
-
     if (!urls.containsKey(dbURL)) {
       throw new NoSuchElementException(dbURL);
     }
 
-    Map statements = (Map) urls.get(dbURL);
+    Map<String, Store> statements = urls.get(dbURL);
 
     if (!statements.containsKey(sql)) {
       throw new NoSuchElementException(dbURL + ", " + sql);
     }
 
-    Store track = (Store) statements.get(sql);
-
+    Store track = statements.get(sql);
     return new CSVFileIterator(track.reader());
   }
 
   public void deleteTrack(String dbURL, String sql) {
-
     checkState();
-
     if (!urls.containsKey(dbURL)) {
       return;
     }
 
-    Map statements = (Map) urls.get(dbURL);
+    Map<String, Store> statements = urls.get(dbURL);
 
     if (!statements.containsKey(sql)) {
       return;
     }
-
-    Store track = (Store) statements.remove(sql);
-
+    Store track = statements.remove(sql);
     track.delete();
-
   }
 
   private void writeList(List list) {
-
     String sep = "";
     Iterator it = list.iterator();
 
     while (it.hasNext()) {
-
       Object value = it.next();
-
       outWriter.print(sep);
-
       if (value == null) {
         outWriter.print("null");
       } else {
@@ -301,32 +235,21 @@ public class CSVMedia implements Media {
         outWriter.print(escape(value));
         outWriter.print('"');
       }
-
       sep = ",";
-
     }
-
     outWriter.println();
   }
 
   private String escape(Object obj) {
-
     char[] buffer = String.valueOf(obj).toCharArray();
-
     StringBuffer result = new StringBuffer(buffer.length);
-
     for (int i = 0; i < buffer.length; i++) {
-
       if (buffer[i] == '"') {
         result.append('"');
       }
-
       result.append(buffer[i]);
-
     }
-
     return result.toString();
-
   }
 
   private void checkState() {
@@ -339,9 +262,7 @@ public class CSVMedia implements Media {
 }
 
 class Counter implements MediaVisitor {
-
   int count = 0;
-
   public void visit(String dbURL, String sql, Object track) {
     count++;
   }
