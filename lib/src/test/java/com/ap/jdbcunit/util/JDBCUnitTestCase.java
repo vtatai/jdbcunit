@@ -19,99 +19,105 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 
 public class JDBCUnitTestCase extends TestCase {
-    protected Connection con;
-    protected Statement stmt;
-    protected ResultSet rs;
+  protected Connection con;
+  protected Statement stmt;
+  protected ResultSet rs;
 
-    public JDBCUnitTestCase(String name) {
-        super(name);
+  public JDBCUnitTestCase(String name) {
+    super(name);
+  }
+
+  public static class PlaybackRecorder implements Recorder {
+
+    String expectedSQL;
+
+    public void setExpectedSQL(String expectedSQL) {
+      this.expectedSQL = expectedSQL;
     }
 
-	public static class PlaybackRecorder implements Recorder {
-    
-		String expectedSQL;
-		
-		public void setExpectedSQL(String expectedSQL) {
-			this.expectedSQL = expectedSQL;    		
-		}
-    	
-		public boolean existsTrack(String dbURL, String sql) {
-			return false;
-		}
-
-		public void add(String dbURL, String sql, ResultSet rs) {
-		
-			count++;
-		
-			assertEquals(count, 1);
-			assertEquals(dbURL, "jdbc:hsqldb:mem:TestDatabase");
-			assertEquals(expectedSQL, sql);
-		
-			// recorded = MemoryResultSet.create(rs);
-		
-		}
-
-		public ResultSet get(Statement stmt, String dbURL, String sql) {
-			count--;
-			return recorded;
-		}
-	
-		public void verify() {
-			assertEquals(count, 0);
-		}
-
-		public void start() {
-		}
-
-		public void stop() {
-		}
-	
-		public void clear() {
-		}
-	
-		public ResultSet getRecorded() {
-			return recorded;
-		}
-		
-		int count;
-		ResultSet recorded;
-	}
-	
-    protected void setUp() throws Exception {
-
-        JDBCDriver driver = new JDBCDriver();
-
-		DriverManager.registerDriver(driver);
-
-        DatabaseService.createDatabase(false);
-
-        JDBCUnit.registerDriver(driver);
-
-        con = DriverManager.getConnection("jdbc:hsqldb:mem:TestDatabase");
+    public boolean existsTrack(String dbURL, String sql) {
+      return false;
     }
 
-    protected void tearDown() throws Exception {
-    	
-        if (rs != null) rs.close();
-        if (stmt != null) stmt.close();
-        if (con != null) con.close();
+    public void add(String dbURL, String sql, ResultSet rs) {
 
-        DatabaseService.clear();
-		DriverWrapper.deregisterDrivers();
-		
-		JDBCUnit.reset();
+      count++;
+
+      assertEquals(count, 1);
+      assertEquals(dbURL, "jdbc:hsqldb:mem:TestDatabase");
+      assertEquals(expectedSQL, sql);
+
+      // recorded = MemoryResultSet.create(rs);
+
     }
-    
-    public void assertOne(ResultSet rs) {
 
-    	try {
-			assertTrue(rs.next());
-			assertEquals(1, rs.getInt(1));
-			assertTrue(!rs.next());
-		} catch (SQLException e) {
-			throw new AssertionFailedError("ResultSet value is not 1");
+    public ResultSet get(Statement stmt, String dbURL, String sql) {
+      count--;
+      return recorded;
+    }
+
+    public void verify() {
+      assertEquals(count, 0);
+    }
+
+    public void start() {
+    }
+
+    public void stop() {
+    }
+
+    public void clear() {
+    }
+
+    public ResultSet getRecorded() {
+      return recorded;
+    }
+
+    int count;
+    ResultSet recorded;
+  }
+
+  protected void setUp() throws Exception {
+
+    JDBCDriver driver = new JDBCDriver();
+
+    DriverManager.registerDriver(driver);
+
+    DatabaseService.createDatabase(false);
+
+    JDBCUnit.registerDriver(driver);
+
+    con = DriverManager.getConnection("jdbc:hsqldb:mem:TestDatabase");
+  }
+
+  protected void tearDown() throws Exception {
+
+		if (rs != null) {
+			rs.close();
 		}
-    	
+		if (stmt != null) {
+			stmt.close();
+		}
+		if (con != null) {
+			con.close();
+		}
+
+    DatabaseService.clear();
+    DriverWrapper.deregisterDrivers();
+
+    JDBCUnit.reset();
+  }
+
+  public void assertOne(ResultSet rs) {
+
+    try {
+      assertTrue(rs.next());
+      assertEquals(1, rs.getInt(1));
+      assertTrue(!rs.next());
+    } catch (SQLException e) {
+      throw new AssertionFailedError("ResultSet value is not 1");
     }
-    
+
+  }
+
 }
