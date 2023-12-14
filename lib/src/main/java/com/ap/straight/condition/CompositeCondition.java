@@ -12,14 +12,14 @@ public interface CompositeCondition extends Condition {
 	 * 
 	 * @return the left-most (last) condition
 	 * 
-	 * @throws NoSuchElementException if no any condition is available 
+	 * @throws java.util.NoSuchElementException if no any condition is available
 	 */
 	Condition takeLast();
 	
 	/**
-	 * Add the given <tt>Condition</tt> to be composited
+	 * Add the given Condition to be composited
 	 * 
-	 * @param condition the <tt>Condition</tt> object to add 
+	 * @param condition the Condition object to add 
 	 */
 	void add(Condition condition);
 	

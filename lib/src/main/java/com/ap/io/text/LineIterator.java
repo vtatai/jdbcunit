@@ -21,7 +21,7 @@ public interface LineIterator {
 	FilePosition lastPosition();
 
 	/**
-	 * Sets the iterator position so that next call to <tt>next</tt> returns the
+	 * Sets the iterator position so that next call to next returns the
 	 * line identified by the given position object
 	 * 
 	 * @param position the line position to go to
@@ -29,7 +29,7 @@ public interface LineIterator {
 	void setNext(FilePosition position);
 
 	/**
-	 * Sets the iterator position so that next call to <tt>previous</tt> returns the
+	 * Sets the iterator position so that next call to previous returns the
 	 * line identified by the given position object
 	 * 
 	 * @param position the line position to go to

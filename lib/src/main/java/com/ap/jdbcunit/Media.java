@@ -11,12 +11,10 @@ import java.util.Iterator;
  * Objects implementing this interface know about storing and retrieving result sets
  * associated to sql statements.  
  *  
- * Conformance tests are available to validate the <tt>Media</tt> interface 
+ * Conformance tests are available to validate the Media interface
  * implementation
  * 
  * @author Jean Lazarou
- * 
- * @see com.ap.jdbcunit.conformance package
  */
 public interface Media {
 	
@@ -44,7 +42,7 @@ public interface Media {
 	/**
 	 * Start visiting all the tracks contained in this media.
 	 *  
-	 * @param visitor the <tt>MediaVisitor</tt> object interrested in handling all the
+	 * @param visitor the MediaVisitor object interrested in handling all the
 	 * tracks contained in this media
 	 */
 	void foreachTrack(MediaVisitor visitor);
@@ -52,9 +50,9 @@ public interface Media {
 	/**
 	 * Answers the question "Does this media contain some SQL statement?"
 	 * 
-	 * @param dbURL the database URL as <tt>String</tt>
-	 * @param sql the SQL statement as <tt>String</tt>
-	 * @return <tt>true</tt> if this media contain the given statement executed on
+	 * @param dbURL the database URL as String
+	 * @param sql the SQL statement as String
+	 * @return true if this media contain the given statement executed on
 	 * the given database
 	 */
 	boolean existsTrack(String dbURL, String sql);
@@ -70,7 +68,7 @@ public interface Media {
 	 * @param sql the executed SQL statement
 	 * @param columnNames the list of all the columns
 	 * 
-	 * @see Media.write
+	 * @see Media#write(List)
 	 */
 	void newTrack(String dbURL, String sql, List columnNames);
 	

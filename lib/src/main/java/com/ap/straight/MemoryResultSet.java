@@ -25,7 +25,7 @@ public class MemoryResultSet extends AbstractResultSet {
 
     /**
      * @param data a list that contains all the rows of the result, the first row is the result set's columns names,
-     *             each row in given list (each the element) must be a <tt>List</tt> object
+     *             each row in given list (each the element) must be a List object
      */
     public MemoryResultSet(List data) {
         this(null, data.iterator());

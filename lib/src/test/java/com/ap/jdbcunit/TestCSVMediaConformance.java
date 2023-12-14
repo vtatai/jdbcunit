@@ -5,6 +5,7 @@ package com.ap.jdbcunit;
 
 import com.ap.jdbcunit.conformance.MediaConformanceTests;
 import com.ap.jdbcunit.conformance.MediaFixture;
+import com.ap.jdbcunit.fixtures.CSVFileMediaFixture;
 import com.ap.jdbcunit.fixtures.CSVMediaFixture;
 
 import junit.framework.Test;
@@ -14,17 +15,16 @@ import junit.framework.TestSuite;
  * @author Jean Lazarou
  */
 public class TestCSVMediaConformance {
+  public static Test suite() {
 
-    public static Test suite () {
-    	
-		TestSuite suite = new TestSuite("TestCVSMedia");
-		
-		MediaFixture[] fixtures = new MediaFixture[] {new CSVMediaFixture()};
+    TestSuite suite = new TestSuite("TestCVSMedia");
 
-		suite.addTest(new MediaConformanceTests(fixtures));
-		
-		return suite;
-		
-    }
+    MediaFixture[] fixtures = new MediaFixture[]{new CSVFileMediaFixture()};
+
+    suite.addTest(new MediaConformanceTests(fixtures));
+
+    return suite;
+
+  }
 
 }

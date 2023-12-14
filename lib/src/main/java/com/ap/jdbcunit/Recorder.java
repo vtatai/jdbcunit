@@ -26,11 +26,11 @@ public interface Recorder {
 	void clear();
 	
 	/**
-	 * Returns <tt>true</tt>
+	 * Returns true
 	 * 
 	 * @param dbURL the database url
 	 * @param sql the SQL statement
-	 * @return <tt>true</tt> if recorder contains the track (the result set)
+	 * @return true if recorder contains the track (the result set)
 	 */
 	boolean existsTrack(String dbURL, String sql);
 	

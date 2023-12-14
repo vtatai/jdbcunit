@@ -33,8 +33,6 @@ import java.util.Collection;
  * </p>
  * 
  * @author Jean Lazarou
- *
- * @see com.ap.store.conformance package
  */
 public interface Store {
 	
@@ -61,39 +59,39 @@ public interface Store {
 	void create();	
 	
 	/**
-	 * @return <tt>true</tt> if the store exists
+	 * @return true if the store exists
 	 */
 	boolean exists();
 	
 	/**
 	 * Deletes the store and its content
 	 * 
-	 * @return <tt>true</tt> if deletion was sucessful
+	 * @return true if deletion was sucessful
 	 */
 	boolean delete();
 	
 	/**
-	 * @return an <tt>InputStream</tt> representing the store's content
+	 * @return an InputStream representing the store's content
 	 */
 	InputStream input();
 	
 	/**
-	 * @return an <tt>OutputStream</tt> to write to the store's content
+	 * @return an OutputStream to write to the store's content
 	 */
 	OutputStream output();
 	
 	/**
-	 * @return an <tt>Reader</tt> representing the store's content
+	 * @return an Reader representing the store's content
 	 */
 	Reader reader();
 	
 	/**
-	 * @return an <tt>Writer</tt> to write to the store's content
+	 * @return an Writer to write to the store's content
 	 */
 	Writer writer();
 
 	/**
-	 * @return an <tt>PrintWriter</tt> to write to the store's content
+	 * @return an PrintWriter to write to the store's content
 	 */
 	PrintWriter printWriter();
 
@@ -102,9 +100,6 @@ public interface Store {
 	 */
 	Store getParent();
 
-	/**
-	 * @return sets the parent's store
-	 */
 	void setParent(Store store);
 	
 	/**
@@ -118,8 +113,8 @@ public interface Store {
 	void detach(Store store);
 
 	/**
-	 * @return all the children of this store, a <tt>Collection</tt> of 
-	 * <tt>Store</tt> obejcts
+	 * @return all the children of this store, a Collection of 
+	 * Store obejcts
 	 */	
 	Collection children();
 	
@@ -143,7 +138,7 @@ public interface Store {
 	 * Removes the child with the given name from the children list
 	 * 
 	 * @param name the name of the child to remove
-	 * @return <tt>true</tt> if the children was removed
+	 * @return true if the children was removed
 	 */
 	boolean remove(String name);
 	

@@ -13,7 +13,7 @@ import java.util.Iterator;
 /**
  * A <code>MemoryResultSetMetaData</code> gives all the meta data (information) of a result set
  *
- * @see com.ap.jdbc.ColumnMetaData
+ * @see ColumnMetaData
  */
 public class MemoryResultSetMetaData implements ResultSetMetaData {
 

@@ -1,13 +1,13 @@
 /*
  * @author: Jean Lazarou
- * @date: 17 févr. 04
+ * @date: 17 fevr. 04
  */
 package com.ap.straight;
 
 /**
  * The methods in this class macth the definition of <code>MemoryResultSetMetaData</code>
  *
- * @see java.sql.MemoryResultSetMetaData
+ * @see java.sql.ResultSetMetaData
  */
 public interface ColumnMetaData {
 

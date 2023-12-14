@@ -35,7 +35,6 @@ public class JavaFile implements Store, Comparable {
 		} else {
 			this.content = this.file;
 		}
-		
 	}
 
 	public JavaFile(String file) {

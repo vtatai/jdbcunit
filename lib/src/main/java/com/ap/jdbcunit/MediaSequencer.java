@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A <code>Recorder<code> that records select, insert, update and delete statements.
+ * A <code>Recorder</code> that records select, insert, update and delete statements.
  * If the update statements changes the result sets of the select statements the
  * correct result set is recorded.
- * <p>
+ *
  * In playback mode the result sets also change after the same updates are
  * replayed.
  *  

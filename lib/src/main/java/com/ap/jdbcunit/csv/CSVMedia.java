@@ -34,7 +34,7 @@ public class CSVMedia implements Media {
    * Creates a CSVMedia that is writing the TOC, the repository, to the given store and the result
    * sets are stored at the same level as the repository.
    *
-   * @param repository the <tt>Store</tt> that contains the TOC
+   * @param repository the Store that contains the TOC
    */
   public CSVMedia(Store repository) {
     this.container = repository.getParent();

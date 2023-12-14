@@ -30,10 +30,10 @@ public class TextFile {
 	}
 		
 	/**
-	 * Returns a <tt>TextFileIterator</tt> iterator through the text file, starting 
+	 * Returns a TextFileIterator iterator through the text file, starting
 	 * at the beginning of the file.
 	 * 
-	 * @return a list iterator of <tt>String</tt>s objects (lines)
+	 * @return a list iterator of Strings objects (lines)
 	 * @throws StoreException 
 	 */
 	public LineIterator head() throws StoreException {
@@ -41,10 +41,10 @@ public class TextFile {
 	}
 	
 	/**
-	 * Returns a <tt>TextFileIterator</tt> through the text file, starting at the
+	 * Returns a TextFileIterator through the text file, starting at the
 	 * end of the file.
 	 * 
-	 * @return a list iterator of <tt>String</tt>s objects (lines)
+	 * @return a list iterator of Strings objects (lines)
 	 */
 	public LineIterator tail() {
 		return createIterator(true);
