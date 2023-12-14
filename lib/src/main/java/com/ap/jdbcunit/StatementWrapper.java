@@ -21,9 +21,9 @@ public class StatementWrapper implements Statement {
 
         if (JDBCUnit.isRecording()) {
 			
-			if (JDBCUnit.getRecorder().existsTrack(con.getMetaData().getURL(), sql)) {
-				return JDBCUnit.getRecorder().get(this, con.getMetaData().getURL(), sql);            
-			}
+          if (JDBCUnit.getRecorder().existsTrack(con.getMetaData().getURL(), sql)) {
+            return JDBCUnit.getRecorder().get(this, con.getMetaData().getURL(), sql);
+          }
 			
             ResultSet rs = actualStatement.executeQuery(sql);
 
