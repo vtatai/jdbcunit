@@ -4,13 +4,12 @@
  */
 package com.ap.jdbcunit.fixtures;
 
-// import com.ap.store.MemoryStore;
-
 import com.ap.jdbcunit.Media;
 import com.ap.jdbcunit.MediaStack;
 import com.ap.jdbcunit.csv.CSVMedia;
 
 import com.ap.jdbcunit.conformance.MediaFixture;
+import com.ap.store.MemoryStore;
 
 public class MediaStackFixture implements MediaFixture {
 
@@ -29,12 +28,12 @@ public class MediaStackFixture implements MediaFixture {
 	}
 
 	public Media newMedia() {
-		// MemoryStore rep = new MemoryStore("repository");
-		// Media m = new CSVMedia(rep.add("toc.csv"));
+		MemoryStore rep = new MemoryStore("repository");
+		Media m = new CSVMedia(rep.add("toc.csv"));
 		
 		MediaStack stack = new MediaStack();
 		
-		// stack.push(m);
+		stack.push(m);
 		
 		return stack;
 	}

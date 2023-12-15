@@ -11,52 +11,52 @@ import com.ap.jdbcunit.util.MediaMock;
  */
 public class TestMediaSequencerRecords extends JDBCUnitTestCase {
 
-	public TestMediaSequencerRecords(String name) {
-		super(name);
-	}
-	
-	protected void setUp() throws Exception {
-		
-		super.setUp();
-		
-		mock = new MediaMock();
-		
-		// recorder = new MediaSequencer(mock.getMedia());
-		
-		mock.setSequencer();
-		
-	}
+  public TestMediaSequencerRecords(String name) {
+    super(name);
+  }
 
-	public void testSelectsOnly() throws Exception {
+  protected void setUp() throws Exception {
 
-		mock.recordOpen();
-		mock.recordSelectPerson();
-		mock.recordSelectPayroll();
-		mock.recordSelectPerson();
-		mock.recordSelectPayroll();
-		mock.recordClose();
-		mock.replay();
-		
-		// JDBCUnit.start(recorder);
-		
-        JDBCUnit.record();
+    super.setUp();
 
-        stmt = con.createStatement();
+    mock = new MediaMock();
 
-        stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
-        stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
-        stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
-        stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
-		
-        stmt.close();
-        
-		JDBCUnit.stop();
+    recorder = new MediaSequencer(mock.getMedia());
 
-        mock.verify();
+    mock.setSequencer();
 
-	}
+  }
 
-	MediaMock mock;
-	MediaSequencer recorder;
-	
+  public void testSelectsOnly() throws Exception {
+
+    mock.recordOpen();
+    mock.recordSelectPerson();
+    mock.recordSelectPayroll();
+    mock.recordSelectPerson();
+    mock.recordSelectPayroll();
+    mock.recordClose();
+    mock.replay();
+
+    JDBCUnit.start(recorder);
+
+    JDBCUnit.record();
+
+    stmt = con.createStatement();
+
+    stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
+    stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
+    stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
+    stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
+
+    stmt.close();
+
+    JDBCUnit.stop();
+
+    mock.verify();
+
+  }
+
+  MediaMock mock;
+  MediaSequencer recorder;
+
 }

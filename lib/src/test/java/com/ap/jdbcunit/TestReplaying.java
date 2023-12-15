@@ -14,73 +14,73 @@ import java.util.Iterator;
 
 public class TestReplaying extends JDBCUnitTestCase {
 
-    public TestReplaying(String name) {
-        super(name);
-    }
+  public TestReplaying(String name) {
+    super(name);
+  }
 
-    public void testSelect() throws Exception {
-        JDBCUnit.start(mockRecorder);
+  public void testSelect() throws Exception {
+    JDBCUnit.start(mockRecorder);
 
-        JDBCUnit.record();
+    JDBCUnit.record();
 
-        stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT * FROM persons");
+    stmt = con.createStatement();
+    rs = stmt.executeQuery("SELECT * FROM persons");
 
-        rs.close();
-        stmt.close();
+    rs.close();
+    stmt.close();
 
-        JDBCUnit.replay();
+    JDBCUnit.replay();
 
-        stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT * FROM persons");
+    stmt = con.createStatement();
+    rs = stmt.executeQuery("SELECT * FROM persons");
 
-        assertSame(mockRecorder.getRecorded(), rs);
+    assertSame(mockRecorder.getRecorded(), rs);
 
-        mockRecorder.verify();
+    mockRecorder.verify();
 
-        JDBCUnit.stop();
+    JDBCUnit.stop();
 
-    }
+  }
 
-    public void testReadAndWriteCSV() throws Exception {
+  public void testReadAndWriteCSV() throws Exception {
 
-        File csv = new File("test-data/test-data.csv");
-        Store store = new JavaFile(csv);
-        CSVMedia media = new CSVMedia(store);
+    File csv = new File("test-data/test-data.csv");
+    Store store = new JavaFile(csv);
+    CSVMedia media = new CSVMedia(store);
 
-        MediaRecorder recorder = new MediaRecorder((media));
+    MediaRecorder recorder = new MediaRecorder((media));
 
-        JDBCUnit.start(recorder);
+    JDBCUnit.start(recorder);
 
-        JDBCUnit.record();
+    JDBCUnit.record();
 
-        stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT * FROM persons");
+    stmt = con.createStatement();
+    rs = stmt.executeQuery("SELECT * FROM persons");
 
-        rs.close();
-        stmt.close();
+    rs.close();
+    stmt.close();
 
-        JDBCUnit.replay();
+    JDBCUnit.replay();
 
-        stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT * FROM persons");
+    stmt = con.createStatement();
+    rs = stmt.executeQuery("SELECT * FROM persons");
 
-        // This assert fails since these aren't the literal same objects, but that doesn't feel like
-        // a particularly useful test. The values that we're pulling via the get() are correct though
-        assertSame(recorder.get(stmt, con.getMetaData().getURL(), "SELECT * FROM persons"), rs);
+    // This assert fails since these aren't the literal same objects, but that doesn't feel like
+    // a particularly useful test. The values that we're pulling via the get() are correct though
+    // assertSame(recorder.get(stmt, con.getMetaData().getURL(), "SELECT * FROM persons"), rs);
 
-        media.close();
-        JDBCUnit.stop();
+    media.close();
+    JDBCUnit.stop();
 
-    }
+  }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+  protected void setUp() throws Exception {
+    super.setUp();
 
-        mockRecorder = new PlaybackRecorder();
+    mockRecorder = new PlaybackRecorder();
 
-        mockRecorder.setExpectedSQL("SELECT * FROM persons");
-    }
+    mockRecorder.setExpectedSQL("SELECT * FROM persons");
+  }
 
-    PlaybackRecorder mockRecorder;
+  PlaybackRecorder mockRecorder;
 }

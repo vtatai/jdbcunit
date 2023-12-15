@@ -4,6 +4,7 @@
  */
 package com.ap.jdbcunit.util;
 
+import com.ap.straight.MemoryResultSet;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
@@ -47,7 +48,7 @@ public class JDBCUnitTestCase extends TestCase {
       assertEquals(dbURL, "jdbc:hsqldb:mem:TestDatabase");
       assertEquals(expectedSQL, sql);
 
-      // recorded = MemoryResultSet.create(rs);
+      recorded = MemoryResultSet.create(rs);
 
     }
 

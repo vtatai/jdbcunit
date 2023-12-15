@@ -3,6 +3,7 @@
  */
 package com.ap.jdbcunit.util;
 
+import com.ap.util.Dates;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,7 +141,7 @@ public class MediaMock {
 		media.existsTrack("jdbc:hsqldb:mem:TestDatabase", "SELECT * FROM payroll WHERE id = 1");
 		controller.setReturnValue(false);
 		media.newTrack("jdbc:hsqldb:mem:TestDatabase", "select * from payroll where id=1", payrollColumns);
-		// media.write(Arrays.asList(new Object[] {new Integer(1), "Big", Dates.createSQLDate(2005, 05, 12), new BigDecimal("6000")}));
+		media.write(Arrays.asList(new Object[] {new Integer(1), "Big", Dates.createSQLDate(2005, 05, 12), new BigDecimal("6000")}));
 		media.closeTrack();
 		
 		addAsRecorded(ROW_FOR_PAYROLL);

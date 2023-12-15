@@ -111,7 +111,7 @@ public class CSVMedia implements Media {
     checkState();
     foreachTrack(new MediaVisitor() {
       public void visit(String dbURL, String sql, Object track) {
-        // ((Store) track).delete();
+        ((Store) track).delete();
       }
     });
     urls.clear();

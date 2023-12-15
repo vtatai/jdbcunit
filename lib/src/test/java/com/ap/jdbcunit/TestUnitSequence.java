@@ -4,6 +4,7 @@
  */
 package com.ap.jdbcunit;
 
+import com.ap.util.Lists;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -17,222 +18,217 @@ import com.ap.jdbcunit.util.JDBCUnitTestCase;
 
 public class TestUnitSequence extends JDBCUnitTestCase {
 
-	public TestUnitSequence(String name) {
-		super(name);
-	}
+  public TestUnitSequence(String name) {
+    super(name);
+  }
 
-	public void testNotStarted() throws Exception {
-		
-		try {
-			
-			JDBCUnit.record();
-			
-			fail("IllegalStateException wasn't thrown");
-			
-		} catch(IllegalStateException e) {
-			// ok, that's right
-		}
-		
-		try {
-			
-			JDBCUnit.stop();
-			
-			fail("IllegalStateException wasn't thrown");
-			
-		} catch(IllegalStateException e) {
-			// right
-		}
-		
-		try {
-			
-			JDBCUnit.replay();
-			
-			fail("IllegalStateException wasn't thrown");
-			
-		} catch(IllegalStateException e) {
-			// ...
-		}
-		
-	}
+  public void testNotStarted() throws Exception {
+    try {
+      JDBCUnit.record();
+      fail("IllegalStateException wasn't thrown");
+    } catch (IllegalStateException e) {
+      // ok, that's right
+    }
 
-	public void testNotStopped() throws Exception {
-		
-		Recorder recorder = new Recorder() {
-			public void start() {}
-			public void stop() {}
-			public void clear() {}
-			public boolean existsTrack(String dbURL, String sql) {return false;}
-			public void add(String dbURL, String sql, ResultSet rs) {}
-			public ResultSet get(Statement stmt, String dbURL, String sql) {return null;}
-		};
-			
-		JDBCUnit.start(recorder);
+    try {
+      JDBCUnit.stop();
+      fail("IllegalStateException wasn't thrown");
+    } catch (IllegalStateException e) {
+      // right
+    }
 
-		try {
-			JDBCUnit.start((Recorder) null);
-			
-			fail("IllegalStateException wasn't thrown");
-			
-		} catch(IllegalStateException e) {
-			// ...
-		}
-		
-	}
+    try {
+      JDBCUnit.replay();
+      fail("IllegalStateException wasn't thrown");
+    } catch (IllegalStateException e) {
+      // ...
+    }
+  }
 
-	public void testRecording() throws Exception {
+  public void testNotStopped() throws Exception {
+    Recorder recorder = new Recorder() {
+      public void start() {
+      }
 
-		MediaRecorder recorder = new MediaRecorder(recordSequence());
+      public void stop() {
+      }
 
-		JDBCUnit.start(recorder);
+      public void clear() {
+      }
 
-		JDBCUnit.record();
+      public boolean existsTrack(String dbURL, String sql) {
+        return false;
+      }
 
-		stmt = con.createStatement();
+      public void add(String dbURL, String sql, ResultSet rs) {
+      }
 
-		rs = stmt.executeQuery("SELECT * FROM persons");
-		
-		JDBCUnit.stop();
+      public ResultSet get(Statement stmt, String dbURL, String sql) {
+        return null;
+      }
+    };
 
-		control.verify();
-	}
+    JDBCUnit.start(recorder);
 
-	public void testReplaying() throws Exception {
+    try {
+      JDBCUnit.start((Recorder) null);
 
-		MediaRecorder recorder = new MediaRecorder(replaySequence());
+      fail("IllegalStateException wasn't thrown");
 
-		JDBCUnit.start(recorder);
+    } catch (IllegalStateException e) {
+      // ...
+    }
 
-		JDBCUnit.replay();
+  }
 
-		stmt = con.createStatement();
+  public void testRecording() throws Exception {
 
-		rs = stmt.executeQuery("SELECT * FROM persons");
-		
-		DatabaseService.containsAllPersons(rs);
-		
-		JDBCUnit.stop();
+    MediaRecorder recorder = new MediaRecorder(recordSequence());
+    JDBCUnit.start(recorder);
+    JDBCUnit.record();
+    stmt = con.createStatement();
+    rs = stmt.executeQuery("SELECT * FROM persons");
+    JDBCUnit.stop();
+    control.verify();
+  }
 
-		control.verify();
-	}
+  public void testReplaying() throws Exception {
 
-	public void testRecordingAndReplaying() throws Exception {
+    MediaRecorder recorder = new MediaRecorder(replaySequence());
 
-		MediaRecorder recorder = new MediaRecorder(recordReplaySequence());
+    JDBCUnit.start(recorder);
 
-		JDBCUnit.start(recorder);
+    JDBCUnit.replay();
 
-		JDBCUnit.record();
+    stmt = con.createStatement();
 
-		stmt = con.createStatement();
+    rs = stmt.executeQuery("SELECT * FROM persons");
 
-		rs = stmt.executeQuery("SELECT * FROM persons");
+    DatabaseService.containsAllPersons(rs);
 
-		JDBCUnit.replay();
+    JDBCUnit.stop();
 
-		stmt = con.createStatement();
+    control.verify();
+  }
 
-		rs = stmt.executeQuery("SELECT * FROM persons");
-		
-		DatabaseService.containsAllPersons(rs);
-		
-		JDBCUnit.stop();
+  public void testRecordingAndReplaying() throws Exception {
 
-		control.verify();
-	}
+    MediaRecorder recorder = new MediaRecorder(recordReplaySequence());
 
-	private Media recordSequence() {
-		
-		Media media = (Media) control.getMock();
-		
-		media.open();
-		control.setVoidCallable();
+    JDBCUnit.start(recorder);
 
-		recordSequence(media);
-		
-		media.close();
-		control.setVoidCallable();
-		
-		control.replay();
+    JDBCUnit.record();
 
-		return media;
-	}
-	
-	private void recordSequence(Media media) {
-		
-		media.existsTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons");
-		control.setDefaultReturnValue(false);
-		
-		// media.newTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons", Lists.toList(new String[] {"ID", "LASTNAME", "FIRSTNAME", "LIVESIN"}));
-		control.setVoidCallable();
-		
-		// media.write(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
-		control.setVoidCallable();
-		// media.write(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
-		control.setVoidCallable();
-		// media.write(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
-		control.setVoidCallable();
-		
-		media.closeTrack();
-		control.setVoidCallable();
+    stmt = con.createStatement();
 
-	}
+    rs = stmt.executeQuery("SELECT * FROM persons");
 
-	private Media replaySequence() {
+    JDBCUnit.replay();
 
-		Media media = (Media) control.getMock();
-		
-		media.open();
-		control.setVoidCallable();
+    stmt = con.createStatement();
 
-		replaySequence(media);
-				
-		media.close();
-		control.setVoidCallable();
-		
-		control.replay();
+    rs = stmt.executeQuery("SELECT * FROM persons");
 
-		return media;
+    DatabaseService.containsAllPersons(rs);
 
-	}
+    JDBCUnit.stop();
 
-	private void replaySequence(Media media) {
-		
-		List data = new ArrayList();
-		
-		// data.add(Lists.toList(new String[] {"id", "lastname", "firstname", "livesin"}));
-		// data.add(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
-		// data.add(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
-		// data.add(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
-		
-		media.getTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons");
-		control.setReturnValue(data.iterator());
+    control.verify();
+  }
 
-	}
+  private Media recordSequence() {
 
-	private Media recordReplaySequence() {
+    Media media = (Media) control.getMock();
 
-		Media media = (Media) control.getMock();
-		
-		media.open();
-		control.setVoidCallable();
+    media.open();
+    control.setVoidCallable();
 
-		recordSequence(media);
-		replaySequence(media);
-				
-		media.close();
-		control.setVoidCallable();
-		
-		control.replay();
+    recordSequence(media);
 
-		return media;
+    media.close();
+    control.setVoidCallable();
 
-	}
+    control.replay();
 
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		control = MockControl.createStrictControl(Media.class);
-	}
-	
-	private MockControl control;
+    return media;
+  }
+
+  private void recordSequence(Media media) {
+
+    media.existsTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons");
+    control.setDefaultReturnValue(false);
+
+    media.newTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons", Lists.toList(new String[] {"ID", "LASTNAME", "FIRSTNAME", "LIVESIN"}));
+    control.setVoidCallable();
+
+    media.write(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
+    control.setVoidCallable();
+    media.write(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
+    control.setVoidCallable();
+    media.write(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
+    control.setVoidCallable();
+
+    media.closeTrack();
+    control.setVoidCallable();
+
+  }
+
+  private Media replaySequence() {
+
+    Media media = (Media) control.getMock();
+
+    media.open();
+    control.setVoidCallable();
+
+    replaySequence(media);
+
+    media.close();
+    control.setVoidCallable();
+
+    control.replay();
+
+    return media;
+
+  }
+
+  private void replaySequence(Media media) {
+
+    List data = new ArrayList();
+
+    data.add(Lists.toList(new String[] {"id", "lastname", "firstname", "livesin"}));
+    data.add(Lists.toList(new Object[] {new Integer(1), "LName1", "FName1", new Integer(1)}));
+    data.add(Lists.toList(new Object[] {new Integer(2), "LName2", "FName2", new Integer(2)}));
+    data.add(Lists.toList(new Object[] {new Integer(3), "LName3", "FName3", new Integer(2)}));
+
+    media.getTrack("jdbc:hsqldb:mem:TestDatabase", "select * from persons");
+    control.setReturnValue(data.iterator());
+
+  }
+
+  private Media recordReplaySequence() {
+
+    Media media = (Media) control.getMock();
+
+    media.open();
+    control.setVoidCallable();
+
+    recordSequence(media);
+    replaySequence(media);
+
+    media.close();
+    control.setVoidCallable();
+
+    control.replay();
+
+    return media;
+
+  }
+
+  protected void setUp() throws Exception {
+    super.setUp();
+
+    control = MockControl.createStrictControl(Media.class);
+  }
+
+  private MockControl control;
 }

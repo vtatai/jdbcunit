@@ -11,53 +11,53 @@ import com.ap.jdbcunit.util.MediaMock;
  */
 public class TestMediaSequencerPlayback extends JDBCUnitTestCase {
 
-	public TestMediaSequencerPlayback(String name) {
-		super(name);
-	}
-	
-	protected void setUp() throws Exception {
-		
-		super.setUp();
-		
-		mock = new MediaMock();
-		
-		// recorder = new MediaSequencer(mock.getMedia());
+  public TestMediaSequencerPlayback(String name) {
+    super(name);
+  }
 
-		mock.setSequencer();
-		mock.setPlaybackMode();
-		
-	}
+  protected void setUp() throws Exception {
 
-	public void testSelectsOnly() throws Exception {
+    super.setUp();
 
-		mock.recordOpen();
-		mock.recordGetSelectPerson();
-		mock.recordGetSelectPayroll();
-		mock.recordGetSelectPerson();
-		mock.recordGetSelectPayroll();
-		mock.recordClose();
-		mock.replay();
-		
-		// JDBCUnit.start(recorder);
-		
-        JDBCUnit.replay();
+    mock = new MediaMock();
 
-        stmt = con.createStatement();
+    recorder = new MediaSequencer(mock.getMedia());
 
-        stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
-        stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
-        stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
-        stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
-		
-        stmt.close();
-        
-		JDBCUnit.stop();
+    mock.setSequencer();
+    mock.setPlaybackMode();
 
-        mock.verify();
+  }
 
-	}
+  public void testSelectsOnly() throws Exception {
 
-	MediaMock mock;
-	MediaSequencer recorder;
-	
+    mock.recordOpen();
+    mock.recordGetSelectPerson();
+    mock.recordGetSelectPayroll();
+    mock.recordGetSelectPerson();
+    mock.recordGetSelectPayroll();
+    mock.recordClose();
+    mock.replay();
+
+    JDBCUnit.start(recorder);
+
+    JDBCUnit.replay();
+
+    stmt = con.createStatement();
+
+    stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
+    stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
+    stmt.executeQuery("SELECT * FROM persons WHERE id = 1").close();
+    stmt.executeQuery("SELECT * FROM payroll WHERE id = 1").close();
+
+    stmt.close();
+
+    JDBCUnit.stop();
+
+    mock.verify();
+
+  }
+
+  MediaMock mock;
+  MediaSequencer recorder;
+
 }

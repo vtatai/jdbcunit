@@ -4,6 +4,7 @@
  */
 package com.ap.jdbcunit.csv;
 
+import com.ap.util.Lists;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
